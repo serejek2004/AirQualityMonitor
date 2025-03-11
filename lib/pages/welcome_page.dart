@@ -49,7 +49,8 @@ class _WelcomePageState extends State<WelcomePage> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(209, 103, 167, 235),
+                            backgroundColor: 
+                              const Color.fromARGB(209, 103, 167, 235),
                           ),
                           child: const Text(
                             'Login',
@@ -75,7 +76,8 @@ class _WelcomePageState extends State<WelcomePage> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(209, 103, 167, 235),
+                            backgroundColor: 
+                              const Color.fromARGB(209, 103, 167, 235),
                           ),
                           child: const Text(
                             'Registration',
