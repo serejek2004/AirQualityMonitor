@@ -4,6 +4,8 @@ class HomePage extends StatelessWidget {
 
   final String description = 'This application will help you monitor temperature, humidity and CO2 levels. If the minimum or maximum set parameters are violated, an alarm will be sent.';
 
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

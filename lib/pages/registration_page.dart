@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class RegistrationPage extends StatelessWidget {
+  const RegistrationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +68,7 @@ class RegistrationPage extends StatelessWidget {
                   child: TextField(
                     obscureText: true,
                     style: TextStyle(
-                      color: Color.fromARGB(255, 103, 167, 235), // Колір тексту
+                      color: Color.fromARGB(255, 103, 167, 235), 
                     ),
                     cursorColor: Color.fromARGB(255, 103, 167, 235),
                     decoration: InputDecoration(
@@ -80,7 +82,7 @@ class RegistrationPage extends StatelessWidget {
                       border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                          color: Color.fromARGB(255, 103, 167, 235), // Колір обводки при фокусі
+                          color: Color.fromARGB(255, 103, 167, 235), 
                         ),
                       ),
                     ),
