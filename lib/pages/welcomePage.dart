@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
-
+class WelcomePage extends StatefulWidget {
   @override
-  State<Home> createState() => _HomeState();
+  State<WelcomePage> createState() => _WelcomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _WelcomePageState extends State<WelcomePage> {  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +13,7 @@ class _HomeState extends State<Home> {
         children: [
           Positioned.fill(
             child: Image.network(
-              'https://surl.li/gzveab',
+              'https://surl.li/pfiagj',
               fit: BoxFit.cover,
             ),
           ),
@@ -28,7 +26,8 @@ class _HomeState extends State<Home> {
                     'Welcome!', 
                     style: TextStyle(
                       fontSize: 50, 
-                      color: Color.fromARGB(255, 103, 167, 235), 
+                      fontFamily: 'Times New Roman',
+                      color: Color.fromARGB(209, 103, 167, 235), 
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -40,15 +39,22 @@ class _HomeState extends State<Home> {
                         width: 150,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/login',
+                              (route) => true,
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(209, 103, 167, 235),
                           ),
                           child: const Text(
                             'Login',
                             style: TextStyle(
-                              color: Colors.black, 
-                              fontSize: 16, 
+                              color: Colors.black,
+                              fontFamily: 'Times New Roman', 
+                              fontSize: 18, 
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -59,7 +65,13 @@ class _HomeState extends State<Home> {
                         width: 150,
                         height: 50,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/registration',
+                              (route) => true,
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromARGB(209, 103, 167, 235),
                           ),
@@ -67,7 +79,8 @@ class _HomeState extends State<Home> {
                             'Registration',
                             style: TextStyle(
                               color: Colors.black, 
-                              fontSize: 16, 
+                              fontFamily: 'Times New Roman',
+                              fontSize: 18, 
                               fontWeight: FontWeight.w600,
                             ),
                           ),
