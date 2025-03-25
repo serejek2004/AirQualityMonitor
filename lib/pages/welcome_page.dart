@@ -1,6 +1,10 @@
+import 'package:first_flutter_project/widgets/background_image.dart';
+import 'package:first_flutter_project/widgets/custom_button.dart';
+import 'package:first_flutter_project/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatefulWidget {
+
   const WelcomePage({super.key});
 
   @override
@@ -8,87 +12,57 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {  
+  final Color customColor = const Color.fromARGB(255, 103, 167, 235);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.network(
-              'https://surl.li/pfiagj',
-              fit: BoxFit.cover,
-            ),
-          ),
+          const BackgroundImage(),
           SafeArea(
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Welcome!', 
-                    style: TextStyle(
-                      fontSize: 50, 
-                      fontFamily: 'Times New Roman',
-                      color: Color.fromARGB(209, 103, 167, 235), 
-                      fontWeight: FontWeight.w600,
-                    ),
+                  CustomText(
+                    title: 'Welcome!', 
+                    fontWeight: FontWeight.w600, 
+                    fontSize: 50, 
+                    textColor: customColor,
                   ),
                   const SizedBox(height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
+                      CustomButton(
+                        buttonText: 'Login',
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/login',
+                            (route) => false,
+                          );
+                        },
                         width: 150,
                         height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              '/login',
-                              (route) => true,
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: 
-                              const Color.fromARGB(209, 103, 167, 235),
-                          ),
-                          child: const Text(
-                            'Login',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Times New Roman', 
-                              fontSize: 18, 
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                        backgroundColor: customColor,
+                        textColor: Colors.black,
                       ),
                       const SizedBox(width: 50),
-                      SizedBox(
+                      CustomButton(
+                        buttonText: 'Registration',
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            '/registration',
+                            (route) => false,
+                          );
+                        },
                         width: 150,
                         height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                              context,
-                              '/registration',
-                              (route) => true,
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: 
-                              const Color.fromARGB(209, 103, 167, 235),
-                          ),
-                          child: const Text(
-                            'Registration',
-                            style: TextStyle(
-                              color: Colors.black, 
-                              fontFamily: 'Times New Roman',
-                              fontSize: 18, 
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                        backgroundColor: customColor,
+                        textColor: Colors.black,
                       ),
                     ],
                   ),

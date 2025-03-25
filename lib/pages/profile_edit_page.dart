@@ -1,226 +1,83 @@
+import 'package:first_flutter_project/widgets/background_image.dart';
+import 'package:first_flutter_project/widgets/custom_button.dart';
+import 'package:first_flutter_project/widgets/custom_input.dart';
+import 'package:first_flutter_project/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class ProfileEditPage extends StatelessWidget {
   const ProfileEditPage({super.key});
+
+  final Color customColor = const Color.fromARGB(255, 103, 167, 235);
+
+  Widget _buildInputRow(String label1, String label2) {
+    return SizedBox(
+      width: 400,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomInput(
+            label: label1,
+            obscureText: false,
+            fieldWidth: 150,
+            textColor: customColor,
+            cursorColor: customColor,
+            focusedBorderColor: customColor,
+          ),
+          CustomInput(
+            label: label2,
+            obscureText: false,
+            fieldWidth: 150,
+            textColor: customColor,
+            cursorColor: customColor,
+            focusedBorderColor: customColor,
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.network(
-              'https://surl.li/pfiagj',
-              fit: BoxFit.cover,
-            ),
-          ),
+          const BackgroundImage(),
           SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'New temperature',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 103, 167, 235), 
-                    fontFamily: 'Times New Roman',
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CustomText(
+                    title: 'New temperature',
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
+                    textColor: Color.fromARGB(255, 103, 167, 235),
                   ),
-                ),
-                const SizedBox(height: 5, width: double.infinity,),
-                const SizedBox(
-                  width: 400, 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 175,
-                        child: TextField(
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 103, 167, 235), 
-                          ),
-                          cursorColor: Color.fromARGB(255, 103, 167, 235),
-                          decoration: InputDecoration(
-                            labelText: 'Min temperature',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 103, 167, 235), 
-                              fontFamily: 'Times New Roman',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 167, 235), 
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 175,
-                        child: TextField(
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 103, 167, 235), 
-                          ),
-                          cursorColor: Color.fromARGB(255, 103, 167, 235),
-                          decoration: InputDecoration(
-                            labelText: 'Max temperature',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 103, 167, 235), 
-                              fontFamily: 'Times New Roman',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 167, 235), 
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Text(
-                  'New humidity',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 103, 167, 235), 
-                    fontFamily: 'Times New Roman',
+                  const SizedBox(height: 5),
+                  _buildInputRow('Min temperature', 'Max temperature'),
+
+                  const CustomText(
+                    title: 'New humidity',
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
+                    textColor: Color.fromARGB(255, 103, 167, 235),
                   ),
-                ),
-                const SizedBox(height: 5, width: double.infinity,),
-                const SizedBox(
-                  width: 400, 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 175,
-                        child: TextField(
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 103, 167, 235), 
-                          ),
-                          cursorColor: Color.fromARGB(255, 103, 167, 235),
-                          decoration: InputDecoration(
-                            labelText: 'Min humidity',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 103, 167, 235), 
-                              fontFamily: 'Times New Roman',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 167, 235), 
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 175,
-                        child: TextField(
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 103, 167, 235), 
-                          ),
-                          cursorColor: Color.fromARGB(255, 103, 167, 235),
-                          decoration: InputDecoration(
-                            labelText: 'Max humidity',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 103, 167, 235), 
-                              fontFamily: 'Times New Roman',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 167, 235), 
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Text(
-                  'New CO2',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 103, 167, 235), 
-                    fontFamily: 'Times New Roman',
+                  const SizedBox(height: 5),
+                  _buildInputRow('Min humidity', 'Max humidity'),
+
+                  const CustomText(
+                    title: 'New CO2',
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
+                    textColor: Color.fromARGB(255, 103, 167, 235),
                   ),
-                ),
-                const SizedBox(height: 5, width: double.infinity,),
-                const SizedBox(
-                  width: 400, 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 175,
-                        child: TextField(
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 103, 167, 235), 
-                          ),
-                          cursorColor: Color.fromARGB(255, 103, 167, 235),
-                          decoration: InputDecoration(
-                            labelText: 'Min CO2',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 103, 167, 235), 
-                              fontFamily: 'Times New Roman',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 167, 235), 
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 175,
-                        child: TextField(
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 103, 167, 235), 
-                          ),
-                          cursorColor: Color.fromARGB(255, 103, 167, 235),
-                          decoration: InputDecoration(
-                            labelText: 'Max CO2',
-                            labelStyle: TextStyle(
-                              color: Color.fromARGB(255, 103, 167, 235), 
-                              fontFamily: 'Times New Roman',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                            ),
-                            border: OutlineInputBorder(),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Color.fromARGB(255, 103, 167, 235), 
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: 150,
-                  height: 50,
-                  child: ElevatedButton(
+                  const SizedBox(height: 5),
+                  _buildInputRow('Min CO2', 'Max CO2'),
+
+                  const SizedBox(height: 20),
+                  CustomButton(
+                    buttonText: 'Update',
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(
                         context,
@@ -228,21 +85,13 @@ class ProfileEditPage extends StatelessWidget {
                         (route) => false,
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(209, 103, 167, 235),
-                    ),
-                    child: const Text(
-                      'Update',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontFamily: 'Times New Roman',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                    width: 150,
+                    height: 50,
+                    backgroundColor: customColor,
+                    textColor: Colors.black,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
