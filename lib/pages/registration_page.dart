@@ -70,6 +70,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     final isRegistered = await userService.registerUser(login, password);
 
     if (isRegistered) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -80,11 +81,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ),
       );
       Navigator.pushNamedAndRemoveUntil(
+        // ignore: use_build_context_synchronously
         context,
         '/home',
         (route) => false,
       );
     } else {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
