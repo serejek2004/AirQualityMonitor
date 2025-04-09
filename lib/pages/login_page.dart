@@ -1,13 +1,51 @@
-import 'package:first_flutter_project/widgets/background_image.dart';
-import 'package:first_flutter_project/widgets/custom_button.dart';
-import 'package:first_flutter_project/widgets/custom_input.dart';
-import 'package:first_flutter_project/widgets/custom_text.dart';
+import 'package:first_flutter_project/services/abstract/user_service.dart';
+import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
+import 'package:first_flutter_project/widgets/general/background_image.dart';
+import 'package:first_flutter_project/widgets/general/custom_button.dart';
+import 'package:first_flutter_project/widgets/general/custom_input.dart';
+import 'package:first_flutter_project/widgets/general/custom_text.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
-  final Color customColor = const Color.fromARGB(255, 103, 167, 235);
-
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final Color customColor = const Color.fromARGB(255, 103, 167, 235);
+  final TextEditingController _loginController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final UserService userService = LocalUserService();
+
+  Future<void> _login() async {
+    final login = _loginController.text;
+    final password = _passwordController.text;
+
+    final user = await userService.validateUser(login, password);
+    if (user) {
+      _navigateToHome();
+    } else {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Wrong login or password'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _navigateToHome() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/home',
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +72,7 @@ class LoginPage extends StatelessWidget {
                     textColor: customColor,
                     cursorColor: customColor,
                     focusedBorderColor: customColor,
+                    controller: _loginController,
                   ),
                   const SizedBox(height: 20),
                   CustomText(
@@ -50,17 +89,12 @@ class LoginPage extends StatelessWidget {
                     textColor: customColor,
                     cursorColor: customColor,
                     focusedBorderColor: customColor,
+                    controller: _passwordController,
                   ),
                   const SizedBox(height: 20),
                   CustomButton(
                     buttonText: 'Login',
-                    onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/home',
-                        (route) => false,
-                      );
-                    },
+                    onPressed: _login,
                     width: 150,
                     height: 50,
                     backgroundColor: customColor,
