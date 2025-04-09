@@ -5,14 +5,18 @@ import 'package:first_flutter_project/pages/profile_page.dart';
 import 'package:first_flutter_project/pages/registration_page.dart';
 import 'package:first_flutter_project/pages/welcome_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final String initialRoute = await _getInitialRoute();
+  
   runApp(MaterialApp(
     theme: ThemeData(primaryColor: Colors.blueAccent),
     debugShowCheckedModeBanner: false,
-    initialRoute: '/',
+    initialRoute: initialRoute,
     routes: {
-      '/': (context) => const WelcomePage(),
+      '/welcome': (context) => const WelcomePage(),
       '/login': (context) => const LoginPage(),
       '/home': (context) => const HomePage(),
       '/registration': (context) => const RegistrationPage(),
@@ -21,4 +25,16 @@ void main() {
     },
   ),
   );
+}
+
+Future<String> _getInitialRoute() async {
+  final prefs = await SharedPreferences.getInstance();
+  final sessionLogin = prefs.getString('sessionLogin');
+  final sessionPassword = prefs.getString('sessionPassword');
+
+  if (sessionLogin != null && sessionPassword != null) {
+    return '/home';
+  }
+
+  return '/welcome';
 }

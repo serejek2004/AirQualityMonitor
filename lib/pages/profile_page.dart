@@ -1,8 +1,12 @@
-import 'package:first_flutter_project/widgets/background_image.dart';
-import 'package:first_flutter_project/widgets/custom_button.dart';
-import 'package:first_flutter_project/widgets/custom_text.dart';
-import 'package:first_flutter_project/widgets/profile_info_row.dart';
+import 'package:first_flutter_project/services/abstract/user_service.dart';
+import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
+import 'package:first_flutter_project/services/not_abstract/user_settings_service.dart';
+import 'package:first_flutter_project/widgets/general/background_image.dart';
+import 'package:first_flutter_project/widgets/profile_page_widgets/buttons.dart';
+import 'package:first_flutter_project/widgets/profile_page_widgets/greeting_user.dart';
+import 'package:first_flutter_project/widgets/profile_page_widgets/profile_info_row.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,7 +16,29 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final UserService userService = LocalUserService();
+  final UserSettingsService userSettingsService = UserSettingsService();
+  Map<String, double>? settings;
+  String? login;
+
   final Color customColor = const Color.fromARGB(255, 103, 167, 235);
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final setLogin = prefs.getString('sessionLogin');
+    final settingsData = await userSettingsService.getUserSettings();
+
+    setState(() {
+      login = setLogin;
+      settings = settingsData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,71 +49,35 @@ class _ProfilePageState extends State<ProfilePage> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomText(
-                    title: 'Welcome USER_EMAIL!',
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                    textColor: customColor,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 40),
-                  const ProfileInfoRow(
-                    label: 'Temperature', 
-                    minValue: 10, 
-                    maxValue: 30,
-                  ),
-                  const SizedBox(height: 20),
-                  const ProfileInfoRow(
-                    label: 'Humidity',
-                    minValue: 20, 
-                    maxValue: 60,
-                  ),
-                  const SizedBox(height: 20),
-                  const ProfileInfoRow(
-                    label: 'CO2',
-                    minValue: 15, 
-                    maxValue: 50,
-                  ),
-                  const SizedBox(height: 40),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomButton(
-                        buttonText: 'Profile edit',
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/profileEdit',
-                            (route) => true,
-                          );
-                        },
-                        width: 150,
-                        height: 50,
-                        backgroundColor: customColor,
-                        textColor: Colors.black,
-                      ),
-                      CustomButton(
-                        buttonText: 'Home',
-                        onPressed: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                            context,
-                            '/home',
-                            (route) => true,
-                          );
-                        },
-                        width: 150,
-                        height: 50,
-                        backgroundColor: customColor,
-                        textColor: Colors.black,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              child: settings == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        buildGreeting(login),
+                        const SizedBox(height: 40),
+                        ProfileInfoRow(
+                          label: 'Temperature', 
+                          minValue: settings!['minTemperature'], 
+                          maxValue: settings!['maxTemperature'],
+                        ),
+                        const SizedBox(height: 20),
+                        ProfileInfoRow(
+                          label: 'Humidity', 
+                          minValue: settings!['minHumidity'], 
+                          maxValue: settings!['maxHumidity'],
+                        ),
+                        const SizedBox(height: 20),
+                        ProfileInfoRow(
+                          label: 'CO2', 
+                          minValue: settings!['minCO2'], 
+                          maxValue: settings!['maxCO2'],
+                        ),
+                        const SizedBox(height: 40),
+                        buildButtons(context),
+                      ],
+                    ),
             ),
           ),
         ],

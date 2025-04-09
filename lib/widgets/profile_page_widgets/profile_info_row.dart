@@ -1,10 +1,10 @@
-import 'package:first_flutter_project/widgets/custom_text.dart';
+import 'package:first_flutter_project/widgets/general/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class ProfileInfoRow extends StatelessWidget {
   final String label;
-  final double minValue;
-  final double maxValue;
+  final double? minValue;
+  final double? maxValue;
 
   const ProfileInfoRow({
     required this.label,
