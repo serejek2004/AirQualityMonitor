@@ -17,7 +17,6 @@ class ProfileEditPage extends StatefulWidget {
 
 class ProfileEditPageState extends State<ProfileEditPage> {
   final Color customColor = const Color.fromARGB(255, 103, 167, 235);
-  final UserSettingsService settingsService = UserSettingsService();
 
   final _controllers = {
     'minTemperature': TextEditingController(),
@@ -32,9 +31,12 @@ class ProfileEditPageState extends State<ProfileEditPage> {
   void initState() {
     super.initState();
     _loadSettings();
+    
   }
 
   Future<void> _loadSettings() async {
+    final settingsService = 
+      Provider.of<UserSettingsService>(context, listen: false);
     final settings = await settingsService.getUserSettings();
     _controllers['minTemperature']!.text = 
       settings['minTemperature'].toString();
@@ -48,6 +50,8 @@ class ProfileEditPageState extends State<ProfileEditPage> {
   }
 
   Future<void> _saveSettings() async {
+    final settingsService = 
+      Provider.of<UserSettingsService>(context, listen: false);
     final prefs = await SharedPreferences.getInstance();
     final String? login = prefs.getString('sessionLogin');
     try {

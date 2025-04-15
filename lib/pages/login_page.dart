@@ -1,10 +1,10 @@
 import 'package:first_flutter_project/services/abstract/user_service.dart';
-import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
 import 'package:first_flutter_project/widgets/general/background_image.dart';
 import 'package:first_flutter_project/widgets/general/custom_button.dart';
 import 'package:first_flutter_project/widgets/general/custom_input.dart';
 import 'package:first_flutter_project/widgets/general/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,12 +18,12 @@ class LoginPageState extends State<LoginPage> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final UserService userService = LocalUserService();
 
   Future<void> _login() async {
     final login = _loginController.text;
     final password = _passwordController.text;
 
+    final userService = Provider.of<UserService>(context, listen: false);
     final user = await userService.validateUser(login, password);
 
     if (!mounted) return;
