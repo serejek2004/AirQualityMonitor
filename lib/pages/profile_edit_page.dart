@@ -4,16 +4,18 @@ import 'package:first_flutter_project/widgets/general/custom_button.dart';
 import 'package:first_flutter_project/widgets/profile_edit_page/section_title.dart';
 import 'package:first_flutter_project/widgets/profile_edit_page/settings_input_row.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ProfileEditPage extends StatefulWidget {
   const ProfileEditPage({super.key});
 
   @override
-  State<ProfileEditPage> createState() => _ProfileEditPageState();
+  State<ProfileEditPage> createState() => ProfileEditPageState();
 }
 
-class _ProfileEditPageState extends State<ProfileEditPage> {
+class ProfileEditPageState extends State<ProfileEditPage> {
   final Color customColor = const Color.fromARGB(255, 103, 167, 235);
   final UserSettingsService settingsService = UserSettingsService();
 
@@ -34,10 +36,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
 
   Future<void> _loadSettings() async {
     final settings = await settingsService.getUserSettings();
-    // ignore: lines_longer_than_80_chars
-    _controllers['minTemperature']!.text = settings['minTemperature'].toString();
-    // ignore: lines_longer_than_80_chars
-    _controllers['maxTemperature']!.text = settings['maxTemperature'].toString();
+    _controllers['minTemperature']!.text = 
+      settings['minTemperature'].toString();
+    _controllers['maxTemperature']!.text = 
+      settings['maxTemperature'].toString();
     _controllers['minHumidity']!.text = settings['minHumidity'].toString();
     _controllers['maxHumidity']!.text = settings['maxHumidity'].toString();
     _controllers['minCO2']!.text = settings['minCO2'].toString();
@@ -74,20 +76,22 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         login.toString(),
       );
 
+      if (!mounted) return;
+
       if (context.mounted) {
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Settings successfully updated'),
             backgroundColor: Colors.green,
           ),
         );
-        // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(context, '/profile', (route) => false);
       }
     } catch (e) {
-      if (context.mounted) {
-        // ignore: use_build_context_synchronously
+      if (!mounted) {
+        return;
+      }
+      else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Error saving settings'),

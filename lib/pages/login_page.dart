@@ -10,11 +10,10 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final Color customColor = const Color.fromARGB(255, 103, 167, 235);
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -26,10 +25,12 @@ class _LoginPageState extends State<LoginPage> {
     final password = _passwordController.text;
 
     final user = await userService.validateUser(login, password);
+
+    if (!mounted) return;
+
     if (user) {
       _navigateToHome();
     } else {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Wrong login or password'),

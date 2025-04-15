@@ -18,8 +18,9 @@ class HomePage extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('sessionLogin');
     await prefs.remove('sessionPassword');
-    // ignore: use_build_context_synchronously
-    Navigator.pushNamedAndRemoveUntil(context, '/welcome', (route) => false);
+    if (context.mounted) {
+      Navigator.pushNamedAndRemoveUntil(context, '/welcome', (route) => false);
+    }
   }
 
   @override

@@ -1,32 +1,30 @@
 import 'package:first_flutter_project/services/abstract/user_service.dart';
-import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
 import 'package:first_flutter_project/widgets/general/background_image.dart';
 import 'package:first_flutter_project/widgets/general/custom_button.dart';
 import 'package:first_flutter_project/widgets/general/custom_input.dart';
 import 'package:first_flutter_project/widgets/general/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _RegistrationPageState createState() => _RegistrationPageState();
+  RegistrationPageState createState() => RegistrationPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class RegistrationPageState extends State<RegistrationPage> {
   final Color customColor = const Color.fromARGB(255, 103, 167, 235);
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cPasswordController = TextEditingController();
 
-  final UserService userService = LocalUserService();
-
   Future<void> _register() async {
     final login = _loginController.text.trim();
     final password = _passwordController.text;
     final confirmPassword = _cPasswordController.text;
+    final userService = Provider.of<UserService>(context, listen: false);
 
     if (login.length < 3 || login.length > 20) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -68,9 +66,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
 
     final isRegistered = await userService.registerUser(login, password);
+    
+    if (!mounted) return;
 
     if (isRegistered) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -81,13 +80,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ),
       );
       Navigator.pushNamedAndRemoveUntil(
-        // ignore: use_build_context_synchronously
         context,
         '/home',
         (route) => false,
       );
     } else {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(

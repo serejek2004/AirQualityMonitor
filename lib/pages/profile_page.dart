@@ -6,18 +6,18 @@ import 'package:first_flutter_project/widgets/profile_page_widgets/buttons.dart'
 import 'package:first_flutter_project/widgets/profile_page_widgets/greeting_user.dart';
 import 'package:first_flutter_project/widgets/profile_page_widgets/profile_info_row.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfilePage> createState() => ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class ProfilePageState extends State<ProfilePage> {
   final UserService userService = LocalUserService();
-  final UserSettingsService userSettingsService = UserSettingsService();
   Map<String, double>? settings;
   String? login;
 
@@ -30,9 +30,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _loadUserData() async {
+    final settingsService = 
+      Provider.of<UserSettingsService>(context, listen: false);
     final prefs = await SharedPreferences.getInstance();
     final setLogin = prefs.getString('sessionLogin');
-    final settingsData = await userSettingsService.getUserSettings();
+    final settingsData = await settingsService.getUserSettings();
 
     setState(() {
       login = setLogin;
