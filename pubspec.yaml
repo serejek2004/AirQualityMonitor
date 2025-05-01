@@ -39,7 +39,7 @@ dependencies:
   provider: ^6.1.4
   connectivity_plus: ^6.1.4
   fluttertoast: ^8.2.12
-  mqtt_client: ^10.8.0
+  mqtt_client: ^10.5.1
 
 dev_dependencies:
   flutter_test:
