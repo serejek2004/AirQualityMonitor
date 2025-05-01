@@ -1,7 +1,9 @@
 import 'package:first_flutter_project/services/abstract/user_service.dart';
 import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
+import 'package:first_flutter_project/services/not_abstract/network_service.dart';
 import 'package:first_flutter_project/services/not_abstract/user_settings_service.dart';
 import 'package:first_flutter_project/widgets/general/background_image.dart';
+import 'package:first_flutter_project/widgets/general/custom_text.dart';
 import 'package:first_flutter_project/widgets/profile_page_widgets/buttons.dart';
 import 'package:first_flutter_project/widgets/profile_page_widgets/greeting_user.dart';
 import 'package:first_flutter_project/widgets/profile_page_widgets/profile_info_row.dart';
@@ -44,6 +46,8 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isConnected = Provider.of<NetworkService>(context).isConnected;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -70,14 +74,18 @@ class ProfilePageState extends State<ProfilePage> {
                           minValue: settings!['minHumidity'], 
                           maxValue: settings!['maxHumidity'],
                         ),
-                        const SizedBox(height: 20),
-                        ProfileInfoRow(
-                          label: 'CO2', 
-                          minValue: settings!['minCO2'], 
-                          maxValue: settings!['maxCO2'],
-                        ),
                         const SizedBox(height: 40),
-                        buildButtons(context),
+                        if (isConnected) ...[
+                          buildButtons(context),
+                        ]
+                        else ...[
+                          const CustomText(
+                            title: 'No Internet Connection',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                            textColor: Colors.red,
+                          ),
+                        ],
                       ],
                     ),
             ),

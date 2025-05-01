@@ -1,6 +1,8 @@
+import 'package:first_flutter_project/services/not_abstract/network_service.dart';
 import 'package:first_flutter_project/services/not_abstract/user_settings_service.dart';
 import 'package:first_flutter_project/widgets/general/background_image.dart';
 import 'package:first_flutter_project/widgets/general/custom_button.dart';
+import 'package:first_flutter_project/widgets/general/custom_text.dart';
 import 'package:first_flutter_project/widgets/profile_edit_page/section_title.dart';
 import 'package:first_flutter_project/widgets/profile_edit_page/settings_input_row.dart';
 import 'package:flutter/material.dart';
@@ -44,8 +46,6 @@ class ProfileEditPageState extends State<ProfileEditPage> {
       settings['maxTemperature'].toString();
     _controllers['minHumidity']!.text = settings['minHumidity'].toString();
     _controllers['maxHumidity']!.text = settings['maxHumidity'].toString();
-    _controllers['minCO2']!.text = settings['minCO2'].toString();
-    _controllers['maxCO2']!.text = settings['maxCO2'].toString();
     setState(() {});
   }
 
@@ -69,14 +69,6 @@ class ProfileEditPageState extends State<ProfileEditPage> {
       );
       await settingsService.setMaxHumidity(
         double.parse(_controllers['maxHumidity']!.text),
-        login.toString(),
-      );
-      await settingsService.setMinCO2(
-        double.parse(_controllers['minCO2']!.text),
-        login.toString(),
-      );
-      await settingsService.setMaxCO2(
-        double.parse(_controllers['maxCO2']!.text),
         login.toString(),
       );
 
@@ -108,6 +100,8 @@ class ProfileEditPageState extends State<ProfileEditPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isConnected = Provider.of<NetworkService>(context).isConnected;
+    
     return Scaffold(
       body: Stack(
         children: [
@@ -134,14 +128,6 @@ class ProfileEditPageState extends State<ProfileEditPage> {
                     label2: 'Max humidity',
                     color: customColor,
                   ),
-                  SectionTitle(title: 'New CO2', color: customColor),
-                  SettingsInputRow(
-                    controller1: _controllers['minCO2']!,
-                    controller2: _controllers['maxCO2']!,
-                    label1: 'Min CO2',
-                    label2: 'Max CO2',
-                    color: customColor,
-                  ),
                   const SizedBox(height: 20),
                   CustomButton(
                     buttonText: 'Update',
@@ -151,6 +137,14 @@ class ProfileEditPageState extends State<ProfileEditPage> {
                     backgroundColor: customColor,
                     textColor: Colors.black,
                   ),
+                  if (!isConnected) ...[
+                    const CustomText(
+                      title: 'No Internet Connection',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      textColor: Colors.red,
+                    ),
+                  ],
                 ],
               ),
             ),
