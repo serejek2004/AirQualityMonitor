@@ -1,6 +1,6 @@
-import 'package:first_flutter_project/widgets/background_image.dart';
-import 'package:first_flutter_project/widgets/custom_button.dart';
-import 'package:first_flutter_project/widgets/custom_text.dart';
+import 'package:first_flutter_project/widgets/general/background_image.dart';
+import 'package:first_flutter_project/widgets/general/custom_button.dart';
+import 'package:first_flutter_project/widgets/general/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -41,7 +41,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                             '/login',
-                            (route) => false,
+                            (route) => true,
                           );
                         },
                         width: 150,
@@ -56,7 +56,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                             '/registration',
-                            (route) => false,
+                            (route) => true,
                           );
                         },
                         width: 150,
