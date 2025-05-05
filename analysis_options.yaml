@@ -9,8 +9,8 @@ analyzer:
   errors:
     dead_code: error
     unused_import: error
-    unused_element: ignore
-    inference_failure_on_function_return_type: ignore
+    unused_element: error
+    inference_failure_on_function_return_type: error
 
 linter:
   rules:

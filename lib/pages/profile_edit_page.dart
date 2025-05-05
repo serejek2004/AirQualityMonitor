@@ -44,8 +44,8 @@ class ProfileEditPageState extends State<ProfileEditPage> {
       settings['minTemperature'].toString();
     _controllers['maxTemperature']!.text = 
       settings['maxTemperature'].toString();
-    _controllers['minHumidity']!.text = settings['minHumidity'].toString();
-    _controllers['maxHumidity']!.text = settings['maxHumidity'].toString();
+    _controllers['minHumidity']?.text = settings['minHumidity'].toString();
+    _controllers['maxHumidity']?.text = settings['maxHumidity'].toString();
     setState(() {});
   }
 
