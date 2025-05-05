@@ -37,6 +37,11 @@ dependencies:
   dio: ^5.8.0+1
   shared_preferences: ^2.5.2
   provider: ^6.1.4
+  connectivity_plus: ^6.1.4
+  fluttertoast: ^8.2.12
+  mqtt_client: ^10.5.1
+  mobile_scanner: ^6.0.10
+  qr_code_scanner: ^1.0.1
 
 dev_dependencies:
   flutter_test:
