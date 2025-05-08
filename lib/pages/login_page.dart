@@ -1,4 +1,5 @@
 import 'package:first_flutter_project/services/abstract/user_service.dart';
+import 'package:first_flutter_project/services/not_abstract/network_service.dart';
 import 'package:first_flutter_project/widgets/general/background_image.dart';
 import 'package:first_flutter_project/widgets/general/custom_button.dart';
 import 'package:first_flutter_project/widgets/general/custom_input.dart';
@@ -17,7 +18,6 @@ class LoginPageState extends State<LoginPage> {
   final Color customColor = const Color.fromARGB(255, 103, 167, 235);
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
 
   Future<void> _login() async {
     final login = _loginController.text;
@@ -50,6 +50,8 @@ class LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isConnected = context.watch<NetworkService>().isConnected;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -93,14 +95,22 @@ class LoginPageState extends State<LoginPage> {
                     controller: _passwordController,
                   ),
                   const SizedBox(height: 20),
-                  CustomButton(
-                    buttonText: 'Login',
-                    onPressed: _login,
-                    width: 150,
-                    height: 50,
-                    backgroundColor: customColor,
-                    textColor: Colors.black,
-                  ),
+                  if (isConnected)
+                    CustomButton(
+                      buttonText: 'Login',
+                      onPressed: _login,
+                      width: 150,
+                      height: 50,
+                      backgroundColor: customColor,
+                      textColor: Colors.black,
+                    )
+                  else
+                    const CustomText(
+                      title: 'No Internet connection',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      textColor: Colors.red,
+                    ),
                 ],
               ),
             ),
