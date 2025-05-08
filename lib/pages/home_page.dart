@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:isolate';
+
 import 'package:first_flutter_project/services/not_abstract/mqtt_service.dart';
 import 'package:first_flutter_project/services/not_abstract/network_service.dart';
 import 'package:first_flutter_project/widgets/general/background_image.dart';
@@ -20,8 +22,13 @@ class _HomePageState extends State<HomePage> {
 
   double temp = 0;
   double humidity = 0;
+  int counter = 0;
+  bool isCounterRunning = false;
 
   late MQTTService _mqttService;
+
+  Isolate? _counterIsolate;
+  ReceivePort? _receivePort;
 
   @override
   void initState() {
@@ -34,12 +41,12 @@ class _HomePageState extends State<HomePage> {
       broker: '758419f9f9db440997781986174fedf9.s1.eu.hivemq.cloud',
       username: 'publisher',
       password: 'Hello1234',
-      topics: ['sensors/temperature', 'sensors/humidity'],
+      topics: ['sensors/temperature/1', 'sensors/humidity/1'],
       onMessageReceived: (topic, message) {
         setState(() {
-          if (topic == 'sensors/temperature') {
+          if (topic == 'sensors/temperature/1') {
             temp = double.tryParse(message) ?? 5;
-          } else if (topic == 'sensors/humidity') {
+          } else if (topic == 'sensors/humidity/1') {
             humidity = double.tryParse(message) ?? 5;
           }
         });
@@ -49,9 +56,49 @@ class _HomePageState extends State<HomePage> {
     _mqttService.connect();
   }
 
+  void _startCounter() async {
+    if (isCounterRunning) return;
+
+    _receivePort = ReceivePort();
+    _counterIsolate =
+        await Isolate.spawn(_counterEntryPoint, _receivePort!.sendPort);
+
+    _receivePort!.listen((message) {
+      setState(() {
+        counter = message as int;
+      });
+    });
+
+    setState(() {
+      isCounterRunning = true;
+    });
+  }
+
+  void _stopCounter() {
+    _receivePort?.close();
+    _counterIsolate?.kill(priority: Isolate.immediate);
+    _receivePort = null;
+    _counterIsolate = null;
+
+    setState(() {
+      isCounterRunning = false;
+      counter = 0;
+    });
+  }
+
+  static void _counterEntryPoint(SendPort sendPort) {
+    int count = 0;
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      count++;
+      sendPort.send(count);
+    });
+  }
+
   @override
   void dispose() {
     _mqttService.disconnect();
+    _receivePort?.close();
+    _counterIsolate?.kill(priority: Isolate.immediate);
     super.dispose();
   }
 
@@ -138,6 +185,36 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    CustomText(
+                      title: 'Counter: $counter',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400,
+                      textColor: customColor,
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomButton(
+                          buttonText: 'Start Counter',
+                          onPressed: _startCounter,
+                          width: 175,
+                          height: 50,
+                          backgroundColor: customColor,
+                          textColor: Colors.black,
+                        ),
+                        const SizedBox(width: 20),
+                        CustomButton(
+                          buttonText: 'Stop Counter',
+                          onPressed: _stopCounter,
+                          width: 175,
+                          height: 50,
+                          backgroundColor: customColor,
+                          textColor: Colors.black,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: 350,
                       child: Row(
@@ -168,8 +245,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                  ]
-                  else ...[
+                  ] else ...[
                     const CustomText(
                       title: 'No Internet Connection',
                       fontWeight: FontWeight.w600,
