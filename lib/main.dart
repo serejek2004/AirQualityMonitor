@@ -1,10 +1,13 @@
+import 'package:first_flutter_project/pages/device_login_page.dart';
 import 'package:first_flutter_project/pages/home_page.dart';
 import 'package:first_flutter_project/pages/login_page.dart';
 import 'package:first_flutter_project/pages/profile_edit_page.dart';
 import 'package:first_flutter_project/pages/profile_page.dart';
 import 'package:first_flutter_project/pages/registration_page.dart';
+import 'package:first_flutter_project/pages/scan_page.dart';
 import 'package:first_flutter_project/pages/welcome_page.dart';
 import 'package:first_flutter_project/services/abstract/user_service.dart';
+import 'package:first_flutter_project/services/not_abstract/device_service.dart';
 import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
 import 'package:first_flutter_project/services/not_abstract/network_service.dart';
 import 'package:first_flutter_project/services/not_abstract/user_settings_service.dart';
@@ -27,6 +30,9 @@ void main() async {
         ),
         ChangeNotifierProvider<NetworkService>(
           create: (_) => NetworkService(),
+        ),
+        Provider(
+          create: (_) => DeviceService(),
         ),
       ],
       child: MyApp(initialRoute: initialRoute),
@@ -51,6 +57,8 @@ class MyApp extends StatelessWidget {
         '/registration': (context) => const RegistrationPage(),
         '/profile': (context) => const ProfilePage(),
         '/profileEdit': (context) => const ProfileEditPage(),
+        '/scan': (context) => const ScanPage(),
+        '/device': (context) => const DeviceLoginPage(),
       },
     );
   }

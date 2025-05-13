@@ -40,9 +40,9 @@ class ProfileEditPageState extends State<ProfileEditPage> {
     final settingsService = 
       Provider.of<UserSettingsService>(context, listen: false);
     final settings = await settingsService.getUserSettings();
-    _controllers['minTemperature']!.text = 
+    _controllers['minTemperature']?.text = 
       settings['minTemperature'].toString();
-    _controllers['maxTemperature']!.text = 
+    _controllers['maxTemperature']?.text = 
       settings['maxTemperature'].toString();
     _controllers['minHumidity']?.text = settings['minHumidity'].toString();
     _controllers['maxHumidity']?.text = settings['maxHumidity'].toString();
