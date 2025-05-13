@@ -6,6 +6,7 @@ import 'package:first_flutter_project/pages/registration_page.dart';
 import 'package:first_flutter_project/pages/welcome_page.dart';
 import 'package:first_flutter_project/services/abstract/user_service.dart';
 import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
+import 'package:first_flutter_project/services/not_abstract/network_service.dart';
 import 'package:first_flutter_project/services/not_abstract/user_settings_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ void main() async {
         ),
         Provider<UserSettingsService>(
           create: (_) => UserSettingsService(),
+        ),
+        ChangeNotifierProvider<NetworkService>(
+          create: (_) => NetworkService(),
         ),
       ],
       child: MyApp(initialRoute: initialRoute),
