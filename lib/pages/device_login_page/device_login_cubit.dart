@@ -4,6 +4,7 @@ import 'package:first_flutter_project/services/helpers/mqtt_initializer.dart';
 import 'package:first_flutter_project/services/helpers/preferences_helper.dart';
 import 'package:first_flutter_project/services/not_abstract/device_service.dart';
 import 'package:first_flutter_project/services/not_abstract/mqtt_service.dart';
+
 part 'device_login_state.dart';
 
 class DeviceLoginCubit extends Cubit<DeviceLoginState> {
@@ -15,7 +16,11 @@ class DeviceLoginCubit extends Cubit<DeviceLoginState> {
   Future<void> initializeMQTT() async {
     final data = await getLoginAndTempId();
     final tempId = data['tempId'];
-    if (tempId == null) return;
+
+    if (tempId == null) {
+      emit(DeviceLoginFailure('Temp ID is missing during MQTT initialization'));
+      return;
+    }
 
     mqttService = await initializeAuthMQTT(
       tempId: tempId,
@@ -32,7 +37,11 @@ class DeviceLoginCubit extends Cubit<DeviceLoginState> {
 
     final data = await getLoginAndTempId();
     final tempId = data['tempId'];
-    if (tempId == null) return;
+
+    if (tempId == null) {
+      emit(DeviceLoginFailure('Temp ID is missing during login'));
+      return;
+    }
 
     final payload = {
       'login': loginInput.trim(),

@@ -21,8 +21,8 @@ class DeviceLoginPage extends StatelessWidget {
     final deviceService = context.read<DeviceService>();
 
     return BlocProvider(
-      create: (_) => DeviceLoginCubit(
-        deviceService: deviceService,)..initializeMQTT(),
+      create: (_) => DeviceLoginCubit(deviceService: deviceService)
+        ..initializeMQTT(),
       child: Scaffold(
         body: Stack(
           children: [
@@ -32,7 +32,11 @@ class DeviceLoginPage extends StatelessWidget {
                 child: BlocConsumer<DeviceLoginCubit, DeviceLoginState>(
                   listener: (context, state) {
                     if (state is DeviceLoginCompleted) {
-                      Navigator.pushNamedAndRemoveUntil(context, '/home', (_) => false);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/home',
+                        (_) => false,
+                      );
                     }
                   },
                   builder: (context, state) {
@@ -75,10 +79,11 @@ class DeviceLoginPage extends StatelessWidget {
                         const SizedBox(height: 20),
                         if (isConnected)
                           CustomButton(
-                            buttonText: state is DeviceLoginLoading ? 
-                              'Connecting...' : 'Connect',
+                            buttonText: state is DeviceLoginLoading
+                                ? 'Connecting...'
+                                : 'Connect',
                             onPressed: state is DeviceLoginLoading
-                                ? () {}
+                                ? null
                                 : () {
                                     context.read<DeviceLoginCubit>().login(
                                           _loginController.text,

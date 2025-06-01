@@ -11,8 +11,10 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> login(String login, String password) async {
     emit(LoginLoading());
-    final user = await userService.validateUser(login, password);
-    if (user) {
+
+    final isValidUser = await userService.validateUser(login, password);
+
+    if (isValidUser) {
       emit(LoginSuccess());
     } else {
       emit(LoginFailure('Wrong login or password'));
