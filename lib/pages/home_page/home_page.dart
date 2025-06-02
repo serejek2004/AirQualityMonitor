@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
                     }
 
                     final isConnected = 
-                      context.read<NetworkService>().isConnected;
+                      context.watch<NetworkService>().isConnected;
 
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.center,

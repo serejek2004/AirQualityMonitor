@@ -1,4 +1,5 @@
 import 'package:first_flutter_project/pages/welcome_page/welcome_page_cubit.dart';
+import 'package:first_flutter_project/services/not_abstract/network_service.dart';
 import 'package:first_flutter_project/widgets/general/background_image.dart';
 import 'package:first_flutter_project/widgets/general/custom_button.dart';
 import 'package:first_flutter_project/widgets/general/custom_text.dart';
@@ -13,76 +14,86 @@ class WelcomePage extends StatelessWidget {
     const Color customColor = Color.fromARGB(255, 103, 167, 235);
 
     return BlocProvider(
-      create: (_) => WelcomeCubit(),
-      child: Scaffold(
-        body: Stack(
-          children: [
-            const BackgroundImage(),
-            SafeArea(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CustomText(
-                      title: 'Welcome!',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 50,
-                      textColor: customColor,
+      create: (_) {
+        final isConnected = context.read<NetworkService>().isConnected;
+        return WelcomeCubit(isConnected);
+      },
+      child: Builder(
+        builder: (context) {
+          final isConnected = context.watch<NetworkService>().isConnected;
+          context.read<WelcomeCubit>().updateConnection(isConnected);
+
+          return Scaffold(
+            body: Stack(
+              children: [
+                const BackgroundImage(),
+                SafeArea(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CustomText(
+                          title: 'Welcome!',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 50,
+                          textColor: customColor,
+                        ),
+                        const SizedBox(height: 50),
+                        BlocBuilder<WelcomeCubit, WelcomeState>(
+                          builder: (context, state) {
+                            if (state.isConnected) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CustomButton(
+                                    buttonText: 'Login',
+                                    onPressed: () {
+                                      Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        '/login',
+                                        (route) => true,
+                                      );
+                                    },
+                                    width: 150,
+                                    height: 50,
+                                    backgroundColor: customColor,
+                                    textColor: Colors.black,
+                                  ),
+                                  const SizedBox(width: 50),
+                                  CustomButton(
+                                    buttonText: 'Registration',
+                                    onPressed: () {
+                                      Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        '/registration',
+                                        (route) => true,
+                                      );
+                                    },
+                                    width: 150,
+                                    height: 50,
+                                    backgroundColor: customColor,
+                                    textColor: Colors.black,
+                                  ),
+                                ],
+                              );
+                            } else {
+                              return const CustomText(
+                                title: 'No Internet Connection',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                                textColor: Colors.red,
+                              );
+                            }
+                          },
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 50),
-                    BlocBuilder<WelcomeCubit, WelcomeState>(
-                      builder: (context, state) {
-                        if (state.isConnected) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CustomButton(
-                                buttonText: 'Login',
-                                onPressed: () {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    '/login',
-                                    (route) => true,
-                                  );
-                                },
-                                width: 150,
-                                height: 50,
-                                backgroundColor: customColor,
-                                textColor: Colors.black,
-                              ),
-                              const SizedBox(width: 50),
-                              CustomButton(
-                                buttonText: 'Registration',
-                                onPressed: () {
-                                  Navigator.pushNamedAndRemoveUntil(
-                                    context,
-                                    '/registration',
-                                    (route) => true,
-                                  );
-                                },
-                                width: 150,
-                                height: 50,
-                                backgroundColor: customColor,
-                                textColor: Colors.black,
-                              ),
-                            ],
-                          );
-                        } else {
-                          return const CustomText(
-                            title: 'No Internet Connection',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                            textColor: Colors.red,
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

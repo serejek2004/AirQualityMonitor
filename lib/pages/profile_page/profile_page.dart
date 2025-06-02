@@ -20,13 +20,13 @@ class ProfilePage extends StatelessWidget {
       context, 
       listen: false,
     );
-    final isConnected = Provider.of<NetworkService>(context).isConnected;
 
     return BlocProvider(
       create: (_) => ProfileCubit(userSettingsService: userSettingsService)
         ..loadUserData(),
       child: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (context, state) {
+          final isConnected = context.watch<NetworkService>().isConnected;
           return Scaffold(
             body: Stack(
               children: [

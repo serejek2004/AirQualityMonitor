@@ -9,20 +9,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DeviceLoginPage extends StatelessWidget {
-  DeviceLoginPage({super.key});
-
   final Color customColor = const Color.fromARGB(255, 103, 167, 235);
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  final DeviceLoginCubit _cubit;
+
+  DeviceLoginPage({required DeviceService deviceService, super.key})
+      : _cubit = DeviceLoginCubit(
+        deviceService: deviceService,
+      )..initializeMQTT();
+
   @override
   Widget build(BuildContext context) {
     final isConnected = context.watch<NetworkService>().isConnected;
-    final deviceService = context.read<DeviceService>();
 
-    return BlocProvider(
-      create: (_) => DeviceLoginCubit(deviceService: deviceService)
-        ..initializeMQTT(),
+    return BlocProvider<DeviceLoginCubit>.value(
+      value: _cubit,
       child: Scaffold(
         body: Stack(
           children: [
@@ -85,10 +88,10 @@ class DeviceLoginPage extends StatelessWidget {
                             onPressed: state is DeviceLoginLoading
                                 ? null
                                 : () {
-                                    context.read<DeviceLoginCubit>().login(
-                                          _loginController.text,
-                                          _passwordController.text,
-                                        );
+                                    _cubit.login(
+                                      _loginController.text,
+                                      _passwordController.text,
+                                    );
                                   },
                             width: 150,
                             height: 50,

@@ -7,7 +7,8 @@ class WelcomeState {
 }
 
 class WelcomeCubit extends Cubit<WelcomeState> {
-  WelcomeCubit() : super(const WelcomeState(isConnected: true));
+  WelcomeCubit(bool initialConnection)
+      : super(WelcomeState(isConnected: initialConnection));
 
   void updateConnection(bool status) {
     emit(WelcomeState(isConnected: status));

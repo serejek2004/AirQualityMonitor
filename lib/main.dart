@@ -58,7 +58,9 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const ProfilePage(),
         '/profileEdit': (context) => ProfileEditPage(),
         '/scan': (context) => const ScanPage(),
-        '/device': (context) => DeviceLoginPage(),
+        '/device': (context) => DeviceLoginPage(
+              deviceService: context.read<DeviceService>(),
+        ),
       },
     );
   }

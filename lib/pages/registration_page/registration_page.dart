@@ -17,7 +17,6 @@ class RegistrationPage extends StatelessWidget {
     final loginController = TextEditingController();
     final passwordController = TextEditingController();
     final cPasswordController = TextEditingController();
-    final isConnected = context.watch<NetworkService>().isConnected;
 
     return BlocProvider(
       create: (_) => RegistrationCubit(
@@ -56,6 +55,8 @@ class RegistrationPage extends StatelessWidget {
                       }
                     },
                     builder: (context, state) {
+                      final isConnected = 
+                        context.watch<NetworkService>().isConnected;
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

@@ -20,8 +20,6 @@ class ProfileEditPage extends StatelessWidget {
     'maxTemperature': TextEditingController(),
     'minHumidity': TextEditingController(),
     'maxHumidity': TextEditingController(),
-    'minCO2': TextEditingController(),
-    'maxCO2': TextEditingController(),
   };
 
   void _fillControllers(Map<String, dynamic> settings) {
@@ -37,8 +35,6 @@ class ProfileEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isConnected = Provider.of<NetworkService>(context).isConnected;
-
     return BlocProvider(
       create: (_) =>
           ProfileEditCubit(Provider.of<UserSettingsService>(
@@ -74,6 +70,9 @@ class ProfileEditPage extends StatelessWidget {
                     }
                   },
                   builder: (context, state) {
+                    final isConnected =
+                      context.watch<NetworkService>().isConnected;
+
                     if (state is ProfileEditLoading) {
                       return const Center(child: CircularProgressIndicator());
                     }

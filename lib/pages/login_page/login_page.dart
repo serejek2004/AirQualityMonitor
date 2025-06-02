@@ -14,8 +14,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color customColor = Color.fromARGB(255, 103, 167, 235);
-    final isConnected = context.watch<NetworkService>().isConnected;
-
     final loginController = TextEditingController();
     final passwordController = TextEditingController();
 
@@ -32,6 +30,7 @@ class LoginPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final isConnected = context.watch<NetworkService>().isConnected;
           return Scaffold(
             body: Stack(
               children: [
