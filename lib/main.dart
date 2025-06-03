@@ -1,11 +1,11 @@
-import 'package:first_flutter_project/pages/device_login_page.dart';
-import 'package:first_flutter_project/pages/home_page.dart';
-import 'package:first_flutter_project/pages/login_page.dart';
-import 'package:first_flutter_project/pages/profile_edit_page.dart';
-import 'package:first_flutter_project/pages/profile_page.dart';
-import 'package:first_flutter_project/pages/registration_page.dart';
-import 'package:first_flutter_project/pages/scan_page.dart';
-import 'package:first_flutter_project/pages/welcome_page.dart';
+import 'package:first_flutter_project/pages/device_login_page/device_login_page.dart';
+import 'package:first_flutter_project/pages/home_page/home_page.dart';
+import 'package:first_flutter_project/pages/login_page/login_page.dart';
+import 'package:first_flutter_project/pages/profile_edit_page/profile_edit_page.dart';
+import 'package:first_flutter_project/pages/profile_page/profile_page.dart';
+import 'package:first_flutter_project/pages/registration_page/registration_page.dart';
+import 'package:first_flutter_project/pages/scan_page/scan_page.dart';
+import 'package:first_flutter_project/pages/welcome_page/welcome_page.dart';
 import 'package:first_flutter_project/services/abstract/user_service.dart';
 import 'package:first_flutter_project/services/not_abstract/device_service.dart';
 import 'package:first_flutter_project/services/not_abstract/local_user_service.dart';
@@ -56,9 +56,11 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/registration': (context) => const RegistrationPage(),
         '/profile': (context) => const ProfilePage(),
-        '/profileEdit': (context) => const ProfileEditPage(),
+        '/profileEdit': (context) => ProfileEditPage(),
         '/scan': (context) => const ScanPage(),
-        '/device': (context) => const DeviceLoginPage(),
+        '/device': (context) => DeviceLoginPage(
+              deviceService: context.read<DeviceService>(),
+        ),
       },
     );
   }
